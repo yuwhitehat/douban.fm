@@ -30,7 +30,7 @@ public class SongServiceImpl implements SongService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    private static final Logger LOG = LoggerFactory.getLogger(SingerServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SongServiceImpl.class);
 
     /**
      *  增加一首歌曲
