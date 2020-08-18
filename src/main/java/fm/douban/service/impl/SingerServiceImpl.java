@@ -77,13 +77,13 @@ public class SingerServiceImpl implements SingerService {
             update.set("name",singer.getName());
         }
         if (singer.getAvatar() != null) {
-            update.set("name",singer.getAvatar());
+            update.set("avatar",singer.getAvatar());
         }
         if (singer.getHomePage() != null) {
-            update.set("name",singer.getHomePage());
+            update.set("homePage",singer.getHomePage());
         }
         if (singer.getSimilarSingerIds() != null) {
-            update.set("name",singer.getSimilarSingerIds());
+            update.set("similarSingerIds",singer.getSimilarSingerIds());
         }
         UpdateResult result = mongoTemplate.updateFirst(query, update, Singer.class);
         return result != null && result.getModifiedCount() > 0;
