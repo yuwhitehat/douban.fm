@@ -40,7 +40,7 @@ public class SongTestControl {
     public Page<Song> testList(){
         SongQueryParam songParam = new SongQueryParam();
         songParam.setPageNum(1);
-        songParam.setPageSize(1);
+        songParam.setPageSize(10);
         return songService.list(songParam);
     }
     @GetMapping(path = "/test/song/modify")

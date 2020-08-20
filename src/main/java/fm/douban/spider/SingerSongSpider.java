@@ -1,0 +1,159 @@
+package fm.douban.spider;
+
+import com.alibaba.fastjson.JSON;
+import fm.douban.model.Singer;
+import fm.douban.model.Song;
+import fm.douban.service.SingerService;
+import fm.douban.service.SongService;
+import fm.douban.service.SubjectService;
+
+import fm.douban.util.HttpUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Component
+public class SingerSongSpider {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SingerSongSpider.class);
+    @Autowired
+    private SubjectService subjectService;
+
+    @Autowired
+    private SingerService singerService;
+
+    @Autowired
+    private SongService songService;
+    @PostConstruct
+    public void init(){
+        doExecute();
+    }
+    //开始执行爬取任务
+    public void doExecute(){
+        getSongDataBySingers();
+    }
+
+    /**
+     * 执行爬取歌曲数据
+     */
+    private void getSongDataBySingers(){
+        List<Singer> singers = singerService.getAll();
+
+        for (Singer singer : singers) {
+            HttpUtil httpUtil = new HttpUtil();
+            String url = "https://fm.douban.com/j/v2/artist/" + singer.getId() + "/";
+            String content = httpUtil.getContent(url, new HashMap<>());
+            LOG.info("爬取数据成功");
+            Map returnData = JSON.parseObject(content, Map.class);
+            Map songList = (Map)returnData.get("songlist");
+            List songs = (List)songList.get("songs");
+            for (int i = 0; i < songs.size(); i++) {
+                Map songData = (Map)songs.get(i);
+                Song song  = new Song();
+                song.setId(songData.get("sid").toString());
+                song.setName(songData.get("title").toString());
+                song.setCover(songData.get("picture").toString());
+                song.setUrl(songData.get("url").toString());
+                song.setGmtCreated(LocalDateTime.now());
+                song.setGmtModified(LocalDateTime.now());
+
+                if (songService.get(song.getId()) != null) {
+                    return;
+                } else {
+                    songService.add(song);
+                }
+
+            }
+            Map relatedChannel = (Map)returnData.get("related_channel");
+            List similarSingers = (List)relatedChannel.get("similar_artists");
+            List<String> similarSingerIds = new ArrayList<>();
+            for (int i = 0; i < similarSingers.size(); i++) {
+                Map similarSingersData = (Map)similarSingers.get(i);
+                Singer singer2 = new Singer();
+                String id = similarSingersData.get("id").toString();
+                singer2.setId(id);
+                singer2.setName(similarSingersData.get("name").toString());
+                singer2.setAvatar(similarSingersData.get("avatar").toString());
+                if (singerService.get(singer.getId()) != null) {
+                    return;
+                } else {
+                    singerService.addSinger(singer);
+                }
+
+                similarSingerIds.add(id);
+            }
+            singer.setSimilarSingerIds(similarSingerIds);
+
+            singerService.modify(singer);
+
+
+        }
+    }
+
+
+    /**
+     * 解析相似歌手
+     * @param singer
+     * @param returnData
+     */
+    /*private void getSimilarSingers(Singer singer, Map returnData) {
+
+        Map relatedChannel = (Map)returnData.get("related_channel");
+        List similarSingers = (List)relatedChannel.get("similar_artists");
+        List<String> similarSingerIds = new ArrayList<>();
+        for (int i = 0; i < similarSingers.size(); i++) {
+            Map similarSingersData = (Map)similarSingers.get(i);
+            Singer singer2 = new Singer();
+            String id = similarSingersData.get("id").toString();
+            singer2.setId(id);
+            singer2.setName(similarSingersData.get("name").toString());
+            singer2.setAvatar(similarSingersData.get("avatar").toString());
+            if (singerService.get(singer.getId()) != null) {
+                return;
+            } else {
+                singerService.addSinger(singer);
+            }
+
+            similarSingerIds.add(id);
+        }
+        singer.setSimilarSingerIds(similarSingerIds);
+        if (singer.getSimilarSingerIds() == null) {
+            singerService.modify(singer);
+        }
+
+    }*/
+
+    /**
+     * 解析歌曲列表
+     * @param returnData
+     */
+    /*private void getSongList(Map returnData) {
+
+        Map songList = (Map)returnData.get("songlist");
+        List songs = (List)songList.get("songs");
+        for (int i = 0; i < songs.size(); i++) {
+            Map songData = (Map)songs.get(i);
+            Song song  = new Song();
+            song.setId(songData.get("sid").toString());
+            song.setName(songData.get("title").toString());
+            song.setCover(songData.get("picture").toString());
+            song.setUrl(songData.get("url").toString());
+            song.setGmtCreated(LocalDateTime.now());
+            song.setGmtModified(LocalDateTime.now());
+            if (songService.get(song.getId()) != null) {
+                return;
+            } else {
+                songService.add(song);
+            }
+
+        }
+    }*/
+}
