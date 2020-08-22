@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="player">
+     <main class="main">
+         <div class="app">
+             <img src="https://img3.doubanio.com/f/fm/1e89298732fbf090aea0812f7fb2af30ad82ab61/pics/fm/landingpage/qr_2@2x.png">
+             <span>下载豆瓣FM APP</span>
+             <span>让好音乐继续</span>
+
+         </div>
+         <div class="songs">
+             <div class="mhz">
+                 <ul th:each="singer:${singers}">
+                     <li>[[${singer.name}]]</li>
+                 </ul>
+                 <span> MHZ </span>
+                 <div class="arrow">
+                     <img src="/images/up.png">
+                     <img src="/images/down.png">
+                 </div>
+             </div>
+
+             <div class="data">
+                 <span class="title">[[${song.name}]]</span>
+                 <ul th:each="singer:${singers}">
+                     <li>[[${singer.name}]]</li>
+                 </ul>
+
+                 <div class="middle">
+                     <div class="m1">
+                         <span class="time">-00:00</span>
+                         <img src="images/say.png">
+                     </div>
+                     <div class="m2">
+                         <img src="images/lyrics.png">
+                         <img src="images/download.png">
+                         <img src="images/share.png">
+                     </div>
+
+                 </div>
+                 <audio class="go" controls>
+                     <source th:src="${song.url}">
+                 </audio>
+                 <div class="hhh">
+                     <div class="h1">
+                         <img src="images/heart.png">
+                         <img src="images/delete.png">
+                     </div>
+                     <div class="h2">
+                         <div class="little">
+                             <img src="images/menu.png">
+                             <img src="images/exchange.png">
+                         </div>
+
+                         <img src="images/left-arrow.png">
+                         <img src="images/play.png">
+                         <img class="last" src="images/right-arrow.png">
+
+                     </div>
+
+                 </div>
+             </div>
+             <div class="intro">
+                 <span>登录/注册 </span>后豆瓣FM将永久保留你的收听历史与喜好
+             </div>
+
+         </div>
+         <div class="cover">
+             <img th:src="${song.cover}" >
+
+         </div>
+
+     </main>
+ </div>
+
+</html>

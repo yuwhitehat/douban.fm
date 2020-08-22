@@ -18,7 +18,7 @@ public interface SongService {
      */
     public Song get(String songId);
     /**
-     * 查询全部歌曲
+     * 分页查询全部歌曲
      * @param songParam
      * @return
      */

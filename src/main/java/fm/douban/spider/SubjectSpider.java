@@ -35,7 +35,7 @@ public class SubjectSpider {
     private SongService songService;
 
     //系统启动时自动执行爬取任务
-    @PostConstruct
+    //@PostConstruct
     public void init(){
         doExecute();
     }

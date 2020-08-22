@@ -75,12 +75,13 @@ public class SongServiceImpl implements SongService {
         Criteria criteria = new Criteria();
         // 可能有多个子条件
         List<Criteria> subCris = new ArrayList();
+
         if (StringUtils.hasText(songParam.getName())) {
             subCris.add(Criteria.where("name").is(songParam.getName()));
         }
 
-        if (StringUtils.hasText(songParam.getLyrics())) {
-            subCris.add(Criteria.where("lyrics").is(songParam.getLyrics()));
+        if (StringUtils.hasText(songParam.getId())) {
+            subCris.add(Criteria.where("id").is(songParam.getId()));
         }
 
         if (subCris.isEmpty()) {

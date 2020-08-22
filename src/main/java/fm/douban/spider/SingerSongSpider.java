@@ -32,7 +32,7 @@ public class SingerSongSpider {
 
     @Autowired
     private SongService songService;
-    @PostConstruct
+    //@PostConstruct
     public void init(){
         doExecute();
     }
