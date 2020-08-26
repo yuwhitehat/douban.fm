@@ -1,6 +1,7 @@
 package fm.douban.service.impl;
 
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import fm.douban.model.Subject;
 import fm.douban.service.SubjectService;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -104,5 +106,29 @@ public class SubjectServiceImpl implements SubjectService {
         DeleteResult result = mongoTemplate.remove(subject);
 
         return result != null && result.getDeletedCount() > 0;
+    }
+    /**
+     * 修改主题
+     * @param subject
+     * @return
+     */
+    @Override
+    public boolean modify(Subject subject) {
+        if (subject == null || !StringUtils.hasText(subject.getId())) {
+            LOG.error("subject data or id is null");
+            return false;
+        }
+        Query query = new Query(Criteria.where("id").is(subject.getId()));
+        Update update = new Update();
+
+        if (subject.getSongIds() != null) {
+            update.set("songIds", subject.getSongIds());
+        }
+        if (subject.getMaster() != null) {
+            update.set("master",subject.getMaster());
+        }
+
+        UpdateResult result = mongoTemplate.updateFirst(query, update, Subject.class);
+        return result != null && result.getModifiedCount() > 0;
     }
 }

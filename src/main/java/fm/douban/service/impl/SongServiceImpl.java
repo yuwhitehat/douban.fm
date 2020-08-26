@@ -133,21 +133,21 @@ public class SongServiceImpl implements SongService {
         }
         Query query = new Query(Criteria.where("id").is(song.getId()));
         Update update = new Update();
-        if (song.getCover() != null){
-            update.set("cover",song.getCover());
-        }
+//        if (song.getCover() != null){
+//            update.set("cover",song.getCover());
+//        }
         if (song.getGmtModified() != null){
             update.set("gmtModified",song.getGmtModified());
         }
-        if (song.getName() != null){
-            update.set("name",song.getName());
-        }
-        if (song.getLyrics() != null){
-            update.set("lyrics",song.getLyrics());
-        }
-        if (song.getUrl() != null){
-            update.set("url",song.getUrl());
-        }
+//        if (song.getName() != null){
+//            update.set("name",song.getName());
+//        }
+//        if (song.getLyrics() != null){
+//            update.set("lyrics",song.getLyrics());
+//        }
+//        if (song.getUrl() != null){
+//            update.set("url",song.getUrl());
+//        }
         if (song.getSingerIds() != null){
             update.set("singerIds",song.getSingerIds());
         }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>兆赫专辑详情页</title>
+    <link rel="stylesheet" href="css/mhzdetail.css">
+</head>
+<body>
+  <div class="details" th:fragment="mhzdetail">
+      <div class="share">分享</div>
+      <div class="detail">
+        <div class="img">
+            <img th:src="${subject.cover}"/>
+        </div>
+         <div class="name">[[${subject.name}]]</div>
+         <button>喜欢 1134</button>
+      </div>
+      <div class="allSongs">
+          <div class="title">
+              全部精选歌曲
+          </div>
+          <ul>
+              <li th:each="song,it:${songs}">
+                  <img th:src = "${song.cover}"/>
+                  <span>[[${it.count}]].</span>
+                  <span>[[${song.name}]]</span>
+              </li>
+
+          </ul>
+          <div class="watch">查看全部精选歌曲</div>
+      </div>
+      <div class="otherSingers">
+          <div class="name2">[[${subject.name}]]</div>
+          <p>该兆赫可能包含以下相似艺术家的歌曲</p>
+          <ul>
+              <li th:each="singer:${simSingers}">
+                  <img th:src="${singer.avatar}"/>
+                  <div class="singerName">[[${singer.name}]] 系</div>
+              </li>
+
+          </ul>
+
+      </div>
+
+
+  </div>
+
+</body>
+</html>

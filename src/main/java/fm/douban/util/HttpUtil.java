@@ -19,8 +19,6 @@ public class HttpUtil {
         Map<String, String> data = new HashMap<>();
         data.put(referer,"https://fm.douban.com/");
         data.put(host, "fm.douban.com");
-//        data.put("Referer",referer);
-//        data.put("Host",host);
         return data;
     }
 

@@ -64,12 +64,19 @@ public class SingerSongSpider {
                 song.setUrl(songData.get("url").toString());
                 song.setGmtCreated(LocalDateTime.now());
                 song.setGmtModified(LocalDateTime.now());
+                List singers1 = (List)songData.get("singers");
+                List<String> singerIds = new ArrayList<>();
+                for (int j = 0; j < singers1.size(); j++) {
+                    Map singer1 = (Map)singers1.get(j);
+                    singerIds.add(singer1.get("id").toString());
+                }
+                song.setSingerIds(singerIds);
+                if (songService.get(song.getId()) == null) {
 
-                if (songService.get(song.getId()) != null) {
-                    return;
-                } else {
                     songService.add(song);
                 }
+
+                songService.modify(song);
 
             }
             Map relatedChannel = (Map)returnData.get("related_channel");
@@ -82,10 +89,9 @@ public class SingerSongSpider {
                 singer2.setId(id);
                 singer2.setName(similarSingersData.get("name").toString());
                 singer2.setAvatar(similarSingersData.get("avatar").toString());
-                if (singerService.get(singer.getId()) != null) {
-                    return;
-                } else {
+                if (singerService.get(singer.getId()) == null) {
                     singerService.addSinger(singer);
+
                 }
 
                 similarSingerIds.add(id);

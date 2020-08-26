@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="explore">
+<div class="MHZ">
+    <ul class="header2">
+        <li>
+            <div class="avatar">
+                <img src="https://img3.doubanio.com/icon/ul211124302-2.jpg">
+            </div>
+            <div class="desc">
+                <strong><a href="#">我的私人兆赫</a></strong>
+                <p>豆瓣FM会根据你的喜好来推荐歌曲，让你与喜欢的音乐不期而遇</p>
+            </div>
+        </li>
+        <li>
+            <div class="avatar">
+                <img src="https://img3.doubanio.com/f/fm/c1f6362114965225752341e9291a4b2f39f78cfb/pics/fm/channel_selected_cover.png">
+            </div>
+            <div class="desc">
+                <strong><a href="#">豆瓣精选兆赫</a></strong>
+                <p>汇聚各种音乐风格的精选兆赫，从这里开始音乐漫游吧</p>
+            </div>
+        </li>
+    </ul>
+    <section class="artist">
+        <div class="artist-title">
+            从艺术家出发
+            <span></span>
+        </div>
+        <ul class="artists">
+            <li th:each="artist:${artistDatas}">
+                <img th:src="${artist.cover}"/>
+                <div class="name"><a th:href="@{'http://127.0.0.1:8080/artist?subjectId='+${artist.id}}" >[[${artist.name}]]</a></div>
+                <div class="description">[[${artist.description}]]</div>
+            </li>
+        </ul>
+        <button class="loadMore">加载更多兆赫</button>
+    </section>
+    <section class="subMHZ">
+
+        <ul class="subs">
+            <li th:each="mhzViewModel:${mhzViewModels}">
+                <div class="title2">[[${mhzViewModel.title}]]</div>
+                <ul>
+                    <li th:each="subject:${mhzViewModel.subjects}">
+                        <strong>[[${subject.name}]]</strong>
+                        <span>MHz</span>
+                    </li>
+
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+</div>
+</div>
+</html>

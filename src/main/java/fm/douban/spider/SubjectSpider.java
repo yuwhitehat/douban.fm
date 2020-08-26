@@ -9,6 +9,8 @@ import fm.douban.service.SongService;
 import fm.douban.service.SubjectService;
 import fm.douban.util.HttpUtil;
 import fm.douban.util.SubjectUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,7 @@ import java.util.Map;
 public class SubjectSpider {
 
     private static final String MHZ_URL = "https://fm.douban.com/j/v2/";
-
+    private static final Logger LOG = LoggerFactory.getLogger(SubjectSpider.class);
     @Autowired
     private SubjectService subjectService;
 
@@ -58,7 +60,7 @@ public class SubjectSpider {
         HttpUtil httpUtil = new HttpUtil();
         String url = MHZ_URL + "rec_channels?specific=all";
         String content = httpUtil.getContent(url, new HashMap<>());
-
+        //LOG.info("爬取成功");
         //反序列化
         Map returnData = JSON.parseObject(content, Map.class);
         Map data = (Map)returnData.get("data");
@@ -85,15 +87,16 @@ public class SubjectSpider {
             }
             singer.setSimilarSingerIds(similarSingerIds);
 
-            if (singerService.get(singer.getId()) != null) {
-                return;
+            if (singerService.get(singer.getId()) == null) {
+
+                singerService.addSinger(singer);
             }
-            singerService.addSinger(singer);
 
         }
 
     }
     private void getMHZData(Map channels, String type){
+
         List subjects = (List)channels.get(type);
         for (int i = 0; i < subjects.size(); i++) {
             Map subjectData = (Map)subjects.get(i);
@@ -111,14 +114,17 @@ public class SubjectSpider {
                 subject.setSubjectSubType(SubjectUtil.TYPE_SUB_STYLE);
             } else if (type.equals("language")) {
                 subject.setSubjectSubType(SubjectUtil.TYPE_SUB_AGE);
-            } else {
+            } else if (type.equals("artist")){
                 subject.setSubjectSubType(SubjectUtil.TYPE_SUB_ARTIST);
+                subject.setMaster(subjectData.get("artist_id").toString());
             }
             subject.setPublishedDate(LocalDateTime.now());
-            if (subjectService.get(subject.getId()) != null) {
-                return;
+
+            if (subjectService.get(subject.getId()) == null) {
+
+                subjectService.addSubject(subject);
             }
-            subjectService.addSubject(subject);
+
             getSubjectSongData(subject.getId());
 
         }
@@ -130,14 +136,19 @@ public class SubjectSpider {
      * @param subjectId
      */
     private void getSubjectSongData(String subjectId) {
+
         HttpUtil httpUtil = new HttpUtil();
         String url = MHZ_URL + "playlist?channel=" + subjectId + "&kbps=128&client=s%3Amainsite%7Cy%3A3.0&app_name=radio_website&version=100&type=n";
         String content = httpUtil.getContent(url, new HashMap<>());
-
+        //LOG.info(content);
         Map returnData = JSON.parseObject(content,Map.class);
         List songDatas = (List)returnData.get("song");
 
+        Subject subject = subjectService.get(subjectId);
+        List<String> songIds = new ArrayList<>();
+
         for (int i = 0; i < songDatas.size(); i++) {
+
             Map songData = (Map)songDatas.get(i);
 
             Song song = new Song();
@@ -147,6 +158,7 @@ public class SubjectSpider {
             song.setName(songData.get("title").toString());
             song.setCover(songData.get("picture").toString());
             song.setUrl(songData.get("url").toString());
+
             List singersData = (List)songData.get("singers");
             List<String> singerIds =  new ArrayList<>();
             for (int j = 0; j < singersData.size(); j++) {
@@ -160,13 +172,17 @@ public class SubjectSpider {
                 if (singerService.get(singer.getId()) == null) {
                     singerService.addSinger(singer);
                 }
+
                 singerIds.add(singerData.get("id").toString());
             }
             song.setSingerIds(singerIds);
             if (songService.get(song.getId()) == null) {
                 songService.add(song);
             }
+            songIds.add(songData.get("sid").toString());
         }
+        subject.setSongIds(songIds);
+        subjectService.modify(subject);
 
     }
 
@@ -194,11 +210,12 @@ public class SubjectSpider {
             subject.setDescription(subjectData.get("intro").toString());
             subject.setSubjectType(SubjectUtil.TYPE_COLLECTION);
             Map creator = (Map)subjectData.get("creator");
-            subject.setMaster(creator.get("name").toString());
-            if (subjectService.get(subject.getId()) != null) {
-                return;
+            subject.setMaster(creator.get("id").toString());
+            if (subjectService.get(subject.getId()) == null) {
+
+                subjectService.addSubject(subject);
             }
-            subjectService.addSubject(subject);
+
             Singer singer = new Singer();
             singer.setId(creator.get("id").toString());
             singer.setGmtCreated(LocalDateTime.now());
@@ -206,10 +223,10 @@ public class SubjectSpider {
             singer.setName(creator.get("name").toString());
             singer.setAvatar(creator.get("picture").toString());
             singer.setHomePage(creator.get("url").toString());
-            if (singerService.get(singer.getId()) != null) {
-                return;
+            if (singerService.get(singer.getId()) == null) {
+                singerService.addSinger(singer);
+
             }
-            singerService.addSinger(singer);
         }
 
     }

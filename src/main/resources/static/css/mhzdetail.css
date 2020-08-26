@@ -1,0 +1,144 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+h1, h2 {
+    margin: 0;
+    padding: 0;
+}
+ul,li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+button {
+
+    border: 0;
+    background-color: transparent;
+    outline: none;
+}
+
+.details {
+    width: 786px;
+    padding: 0 93px 0 107px;
+    background: #FFFFFF;
+    position: relative;
+    border: 1px solid #E4E4E4;
+    box-sizing: border-box;
+    margin: 79px auto;
+}
+.details .share {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #9A9A9A;
+}
+.details .detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+.details .detail .img > img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+.details .detail .name {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 30px;
+    line-height: 42px;
+    color: #000000;
+
+}
+.details .detail button {
+    width: 76px;
+    height: 20px;
+    border: 1px solid #D7D7D7;
+    box-sizing: border-box;
+    font-size: 12px;
+    line-height: 17px;
+    color: #C5C5C5;
+    text-align: center;
+}
+.details .allSongs {
+    margin-top: 40px;
+    padding: 40px 0 40px;
+    border-top: 1px solid #EAEAEA;
+    box-sizing: border-box;
+}
+.details .allSongs .title {
+    font-size: 12px;
+    line-height: 17px;
+    color: #2F9842;
+    margin-bottom: 20px;
+}
+.details .allSongs > ul > li {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    line-height: 17px;
+    color: #000000;
+    margin-bottom: 18px;
+}
+.details .allSongs > ul > li > img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+.details .allSongs .watch {
+    margin-top: 2px;
+
+    font-size: 12px;
+    line-height: 17px;
+    color: #AFAFAF;
+
+}
+.details .otherSingers {
+    padding-top: 40px;
+    border-top: 1px solid #EAEAEA;
+    box-sizing: border-box;
+    font-size: 12px;
+    line-height: 17px;
+}
+.details .otherSingers .name2 {
+
+    color: #2F9842;
+    margin-bottom: 20px;
+
+}
+.details .otherSingers > p {
+    color: #AFAFAF;
+    margin-bottom: 76px;
+}
+.details .otherSingers > ul {
+    display: flex;
+    align-items: center;
+}
+.details .otherSingers > ul > li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 57px 40px 0;
+}
+
+.details .otherSingers > ul > li:nth-child(4n+4) {
+    margin-right: 0;
+}
+.details .otherSingers > ul > li >img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+.details .otherSingers > ul > li.singerName {
+    font-size: 14px;
+    line-height: 20px;
+    color: #000000;
+}

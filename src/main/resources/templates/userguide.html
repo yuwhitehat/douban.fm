@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的私人兆赫</title>
+    <link rel="stylesheet" href="css/userguide.css">
+</head>
+
+<div th:fragment="userguide">
+  <header class="header">
+     <a href="#">已有账号登录</a>
+  </header>
+<div class="all">
+  <div class="select">
+      挑选你喜欢的艺术家，开启私人音乐之旅
+  </div>
+
+  <ul class="singerMHz">
+      <li th:each="singer:${singers}">
+          <img th:src="${singer.avatar}"/>
+          <strong>[[${singer.name}]]</strong>
+          <button>喜欢</button>
+      </li>
+  </ul>
+  <div class="own">
+      <a  class="change" href="#">换一批</a>
+      <a  class="search" href="#">自己搜</a>
+  </div>
+
+  <ul class="like">
+      <li>
+          <img src="images/default-avatar.png"/>
+      </li>
+      <li>
+          <img src="images/default-avatar.png"/>
+      </li>
+      <li>
+          <img src="images/default-avatar.png"/>
+      </li>
+      <li>
+          <img src="images/default-avatar.png"/>
+      </li>
+      <li>
+          <img src="images/default-avatar.png"/>
+      </li>
+  </ul>
+  <div class="skip">跳过，直接去听歌</div>
+</div>
+</div>
+
+</html>

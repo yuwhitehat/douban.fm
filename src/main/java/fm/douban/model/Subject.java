@@ -24,6 +24,7 @@ public class Subject {
     //歌单：作者 or 兆赫：音乐家
     private String master;
     //发布时间
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime publishedDate;
     //主题的一级分类：兆赫、歌单
     private String subjectType;

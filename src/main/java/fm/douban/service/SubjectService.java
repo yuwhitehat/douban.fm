@@ -40,4 +40,11 @@ public interface SubjectService {
      * @return
      */
     public boolean delete(String subjectId);
+
+    /**
+     * 修改主题
+     * @param subject
+     * @return
+     */
+    public boolean modify(Subject subject);
 }

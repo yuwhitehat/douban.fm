@@ -37,7 +37,7 @@ public class SubjectTestControl {
     @GetMapping(path = "/test/subject/getByType")
     public List<Subject> testGetByType(){
         Subject subject = new Subject();
-        subject.setSubjectType(SubjectUtil.TYPE_COLLECTION);
+        subject.setSubjectType(SubjectUtil.TYPE_MHZ);
         return subjectService.getSubjects(subject.getSubjectType());
     }
     @GetMapping(path = "/test/subject/getBySubType")
@@ -45,7 +45,7 @@ public class SubjectTestControl {
 
         Subject subject = new Subject();
         subject.setSubjectType(SubjectUtil.TYPE_MHZ);
-        subject.setSubjectSubType(SubjectUtil.TYPE_SUB_ARTIST);
+        subject.setSubjectSubType(SubjectUtil.TYPE_SUB_STYLE);
         return subjectService.getSubjects(subject.getSubjectType(),subject.getSubjectSubType());
 
     }
