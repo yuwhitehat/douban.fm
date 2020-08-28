@@ -103,7 +103,7 @@ public class SongServiceImpl implements SongService {
             return pageResult;
         }
 
-        // 三个子条件以 and 关键词连接成总条件对象，相当于 name='' and lyrics='' and subjectId=''
+        //两个个子条件以 and 关键词连接成总条件对象，相当于 name='' and id=''
         criteria.andOperator(subCris.toArray(new Criteria[]{}));
 
         // 条件对象构建查询对象

@@ -228,6 +228,8 @@ a {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    overflow: hidden;
+    height: 600px;
 }
 .MHZ .artist .artists > li {
     width: 200px;
