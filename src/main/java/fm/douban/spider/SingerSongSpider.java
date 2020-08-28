@@ -53,53 +53,9 @@ public class SingerSongSpider {
             String content = httpUtil.getContent(url, new HashMap<>());
             LOG.info("爬取数据成功");
             Map returnData = JSON.parseObject(content, Map.class);
-            Map songList = (Map)returnData.get("songlist");
-            List songs = (List)songList.get("songs");
-            for (int i = 0; i < songs.size(); i++) {
-                Map songData = (Map)songs.get(i);
-                Song song  = new Song();
-                song.setId(songData.get("sid").toString());
-                song.setName(songData.get("title").toString());
-                song.setCover(songData.get("picture").toString());
-                song.setUrl(songData.get("url").toString());
-                song.setGmtCreated(LocalDateTime.now());
-                song.setGmtModified(LocalDateTime.now());
-                List singers1 = (List)songData.get("singers");
-                List<String> singerIds = new ArrayList<>();
-                for (int j = 0; j < singers1.size(); j++) {
-                    Map singer1 = (Map)singers1.get(j);
-                    singerIds.add(singer1.get("id").toString());
-                }
-                song.setSingerIds(singerIds);
-                if (songService.get(song.getId()) == null) {
 
-                    songService.add(song);
-                }
-
-                songService.modify(song);
-
-            }
-            Map relatedChannel = (Map)returnData.get("related_channel");
-            List similarSingers = (List)relatedChannel.get("similar_artists");
-            List<String> similarSingerIds = new ArrayList<>();
-            for (int i = 0; i < similarSingers.size(); i++) {
-                Map similarSingersData = (Map)similarSingers.get(i);
-                Singer singer2 = new Singer();
-                String id = similarSingersData.get("id").toString();
-                singer2.setId(id);
-                singer2.setName(similarSingersData.get("name").toString());
-                singer2.setAvatar(similarSingersData.get("avatar").toString());
-                if (singerService.get(singer.getId()) == null) {
-                    singerService.addSinger(singer);
-
-                }
-
-                similarSingerIds.add(id);
-            }
-            singer.setSimilarSingerIds(similarSingerIds);
-
-            singerService.modify(singer);
-
+            getSongList(returnData);
+            getSimilarSingers(singer, returnData);
 
         }
     }
@@ -110,7 +66,7 @@ public class SingerSongSpider {
      * @param singer
      * @param returnData
      */
-    /*private void getSimilarSingers(Singer singer, Map returnData) {
+    private void getSimilarSingers(Singer singer, Map returnData) {
 
         Map relatedChannel = (Map)returnData.get("related_channel");
         List similarSingers = (List)relatedChannel.get("similar_artists");
@@ -122,26 +78,21 @@ public class SingerSongSpider {
             singer2.setId(id);
             singer2.setName(similarSingersData.get("name").toString());
             singer2.setAvatar(similarSingersData.get("avatar").toString());
-            if (singerService.get(singer.getId()) != null) {
-                return;
-            } else {
+            if (singerService.get(singer.getId()) == null) {
                 singerService.addSinger(singer);
             }
-
             similarSingerIds.add(id);
         }
         singer.setSimilarSingerIds(similarSingerIds);
-        if (singer.getSimilarSingerIds() == null) {
-            singerService.modify(singer);
-        }
 
-    }*/
+        singerService.modify(singer);
+    }
 
     /**
      * 解析歌曲列表
      * @param returnData
      */
-    /*private void getSongList(Map returnData) {
+    private void getSongList(Map returnData) {
 
         Map songList = (Map)returnData.get("songlist");
         List songs = (List)songList.get("songs");
@@ -154,12 +105,17 @@ public class SingerSongSpider {
             song.setUrl(songData.get("url").toString());
             song.setGmtCreated(LocalDateTime.now());
             song.setGmtModified(LocalDateTime.now());
-            if (songService.get(song.getId()) != null) {
-                return;
-            } else {
+            List singers1 = (List)songData.get("singers");
+            List<String> singerIds = new ArrayList<>();
+            for (int j = 0; j < singers1.size(); j++) {
+                Map singer1 = (Map)singers1.get(j);
+                singerIds.add(singer1.get("id").toString());
+            }
+            song.setSingerIds(singerIds);
+            if (songService.get(song.getId()) == null) {
                 songService.add(song);
             }
-
+            songService.modify(song);
         }
-    }*/
+    }
 }

@@ -35,4 +35,10 @@ public interface SongService {
      * @return
      */
     public boolean delete(String songId);
+
+    /**
+     * 删除所有数据
+     * @return
+     */
+    public boolean deleteAll();
 }

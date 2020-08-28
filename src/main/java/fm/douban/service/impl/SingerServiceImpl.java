@@ -106,4 +106,10 @@ public class SingerServiceImpl implements SingerService {
         DeleteResult result = mongoTemplate.remove(singer);
         return result != null && result.getDeletedCount() > 0;
     }
+
+    @Override
+    public boolean deleteAll() {
+        DeleteResult result = mongoTemplate.remove(new Query(), Singer.class);
+        return result != null && result.getDeletedCount() > 0;
+    }
 }

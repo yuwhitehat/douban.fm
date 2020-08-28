@@ -38,4 +38,10 @@ public interface SingerService {
      * @return
      */
     public boolean delete(String singerId);
+
+    /**
+     * 删除所有数据
+     * @return
+     */
+    public boolean deleteAll();
 }

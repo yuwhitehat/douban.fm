@@ -1,0 +1,79 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+h1, h2 {
+    margin: 0;
+    padding: 0;
+}
+ul,li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+button {
+
+    border: 0;
+    background-color: transparent;
+    outline: none;
+}
+.searchLiked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.searchLiked .search {
+    margin-top: 231px;
+    display: flex;
+    align-items: center;
+}
+.searchLiked .search > input {
+    margin: 0;
+    width: 788px;
+    height: 55px;
+    background: #FFFFFF;
+    border: 1px solid #E6E6E6;
+    box-sizing: border-box;
+    border-radius: 50px;
+    padding-left: 30px;
+}
+.searchLiked .search > button {
+    margin-left: 20px;
+    font-size: 16px;
+    line-height: 22px;
+
+    color: #777777;
+}
+.searchLiked > ul {
+    display: flex;
+    align-items: center;
+    padding: 0 240px;
+    flex-wrap: wrap;
+}
+.searchLiked > ul > li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    margin-right: 65px;
+}
+.searchLiked > ul > li:nth-child(5n+5) {
+    margin-right: 0;
+}
+.searchLiked > ul > li > img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.searchLiked > ul > li > a {
+    font-size: 12px;
+    line-height: 17px;
+    color: #000000;
+
+}

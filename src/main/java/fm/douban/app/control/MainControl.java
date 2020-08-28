@@ -89,5 +89,40 @@ public class MainControl {
         return "index";
     }
 
+    /**
+     * 搜索页
+     * @param model
+     * @return
+     */
+    @GetMapping(path = "/search")
+    public String search(Model model) {
 
+        return "search";
+    }
+
+    /**
+     * 搜索结果
+     * @param keyword
+     * @return
+     */
+    @GetMapping(path = "/searchContent")
+    @ResponseBody
+    public Map searchContent(@RequestParam(name = "keyword") String keyword) {
+        SongQueryParam songQueryParam = new SongQueryParam();
+        songQueryParam.setPageSize(10);
+        songQueryParam.setPageNum(1);
+        songQueryParam.setName(keyword);
+        Page<Song> pageSongs = songService.list(songQueryParam);
+        List<Song> songs = new ArrayList<>();
+
+        if (pageSongs != null && pageSongs.getContent() != null && pageSongs.getContent().size() > 0) {
+            for (Song song : pageSongs.getContent()) {
+                songs.add(song);
+            }
+        }
+
+        Map<String, List<Song>> map = new HashMap<>();
+        map.put("songs",songs);
+        return map;
+    }
 }

@@ -131,4 +131,10 @@ public class SubjectServiceImpl implements SubjectService {
         UpdateResult result = mongoTemplate.updateFirst(query, update, Subject.class);
         return result != null && result.getModifiedCount() > 0;
     }
+
+    @Override
+    public boolean deleteAll() {
+        DeleteResult result = mongoTemplate.remove(new Query(), Subject.class);
+        return result != null && result.getDeletedCount() > 0;
+    }
 }

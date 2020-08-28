@@ -49,10 +49,14 @@ public class SingerTestControl {
      }
      @GetMapping(path = "/test/singer/del")
      public boolean testDelSinger(){
-//         Singer singer = new Singer();
-//         singer.setId("0");
+
          return singerService.delete("0");
 
      }
+    @GetMapping(path = "/test/singer/delAll")
+    public boolean testDeleteAll(){
+
+        return singerService.deleteAll();
+    }
 
 }

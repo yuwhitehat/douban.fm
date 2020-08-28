@@ -47,4 +47,10 @@ public interface SubjectService {
      * @return
      */
     public boolean modify(Subject subject);
+
+    /**
+     * 删除所有数据
+     * @return
+     */
+    public boolean deleteAll();
 }

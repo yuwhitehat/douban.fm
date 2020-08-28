@@ -41,7 +41,7 @@ public class SongTestControl {
         SongQueryParam songParam = new SongQueryParam();
         songParam.setPageNum(1);
         songParam.setPageSize(10);
-        songParam.setName("Good Good");
+        //songParam.setName("Good Good");
         return songService.list(songParam);
     }
     @GetMapping(path = "/test/song/modify")
@@ -56,5 +56,10 @@ public class SongTestControl {
         Song song = new Song();
         song.setId("0");
         return songService.delete(song.getId());
+    }
+
+    @GetMapping(path = "/test/song/delAll")
+    public boolean testDeleteAll(){
+        return songService.deleteAll();
     }
 }

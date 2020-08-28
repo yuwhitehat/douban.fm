@@ -3,6 +3,7 @@ package fm.douban.service.impl;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import fm.douban.model.Song;
+import fm.douban.model.Subject;
 import fm.douban.param.SongQueryParam;
 import fm.douban.service.SongService;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.LongSupplier;
+import java.util.regex.Pattern;
 
 
 @Service
@@ -77,7 +79,8 @@ public class SongServiceImpl implements SongService {
         List<Criteria> subCris = new ArrayList();
 
         if (StringUtils.hasText(songParam.getName())) {
-            subCris.add(Criteria.where("name").is(songParam.getName()));
+            Pattern pattern = Pattern.compile("^.*" + songParam.getName() + ".*$", Pattern.CASE_INSENSITIVE);
+            subCris.add(Criteria.where("name").regex(pattern));
         }
 
         if (StringUtils.hasText(songParam.getId())) {
@@ -170,5 +173,15 @@ public class SongServiceImpl implements SongService {
         DeleteResult result = mongoTemplate.remove(song);
 
         return result != null && result.getDeletedCount() > 0;
+    }
+    /**
+     * 删除所有数据
+     * @return
+     */
+    @Override
+    public boolean deleteAll() {
+        DeleteResult result = mongoTemplate.remove(new Query(), Song.class);
+        return result != null && result.getDeletedCount() > 0;
+
     }
 }
