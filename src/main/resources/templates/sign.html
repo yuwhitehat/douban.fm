@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>注册页</title>
@@ -11,14 +11,26 @@
     <div class="go">返回</div>
     <div class="register">
         <div class="signOrLogin">
-            <div class="login">登录</div>
-            <div class="sign">注册</div>
+            <div class="login"><a href="http://127.0.0.1:8080/login">密码登录</a></div>
+            <div class="sign"><a href="http://127.0.0.1:8080/sign">注册</a></div>
         </div>
-        <form class="form" action="/register" method="post">
-            <input type="text" class="name" name="name" placeholder="请输入用户名">
-            <input type="text" class="mobile" name="mobile" placeholder="请输入号码">
-            <input type="password" class="password" name="password" placeholder="请输入密码">
-            <input type="password" class="confirm" name="confirmPwd" placeholder="确认密码">
+        <form class="form" action="/register" th:object="${user}" method="post">
+
+            <div th:classappend="${#fields.hasErrors('name')} ? 'error' : ''">
+                <input type="text" class="name" name="name" placeholder="请输入用户名" th:filed="*{name}">
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+            <div>
+                <input type="text" class="mobile" name="mobile" placeholder="请输入号码">
+            </div>
+            <div th:classappend="${#fields.hasErrors('password')} ? 'error' : ''">
+                <input type="password" class="password" name="password" placeholder="请输入密码" th:filed="*{password}">
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+            </div>
+           <div>
+               <input type="password" class="confirm" name="confirmPwd" placeholder="确认密码">
+           </div>
+
             <button type="submit">注册豆瓣</button>
 
         </form>

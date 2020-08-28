@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>登录页</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<div class="loginPage">
+    <div class="go">返回</div>
+    <div class="login">
+        <div class="loginOrSign">
+            <div class="login1"><a href="http://127.0.0.1:8080/login">密码登录</a></div>
+            <div class="sign"><a href="http://127.0.0.1:8080/sign">注册</a></div>
+        </div>
+        <form class="form" action="/authenticate"  method="post">
+            <div>
+                <input type="text" class="name" name="name" placeholder="请输入用户名">
+            </div>
+
+            <div>
+                <input type="password" class="password" name="password" placeholder="请输入密码">
+            </div>
+
+
+            <button type="submit">登录豆瓣</button>
+            <div class="auto">
+                <input type="checkbox">下次自动登录
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

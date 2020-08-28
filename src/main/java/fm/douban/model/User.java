@@ -1,9 +1,20 @@
 package fm.douban.model;
 
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
 public class User {
+
+
     private String id;
+    @NotEmpty(message = "姓名不能为空")
     private String name;
+
     private String mobile;
+    @Min(value = 6, message = "密码最少6位")
+    @Max(value = 18, message = "密码最多18位")
     private String password;
 
     public String getId() {

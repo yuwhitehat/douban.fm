@@ -24,12 +24,7 @@ input {
     margin: 0;
     padding: 0;
 }
-.error {
-    font-size: 12px;
-    line-height: 17px;
-    color: red;
-}
-.registerPage .go {
+.loginPage .go {
     position: absolute;
     top: 127px;
     left: 248px;
@@ -38,51 +33,51 @@ input {
     color: #767676;
     text-align: center;
 }
-.registerPage .register {
+.loginPage .login {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 285px;
 }
-.registerPage .register .signOrLogin {
+.loginPage .login .loginOrSign {
     display: flex;
     align-items: center;
     margin-bottom: 40px;
 }
 
-.registerPage .register .signOrLogin .login {
-    width: 155px;
-    border-bottom: 1px solid #E2E2E2;
-    padding-bottom: 10px;
-    text-align: center;
-
-}
-.registerPage .register .signOrLogin .login > a {
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 25px;
-    color: #000000;
-    opacity: 0.4;
-}
-.registerPage .register .signOrLogin .sign {
+.loginPage .login .loginOrSign .login1 {
     width: 155px;
     border-bottom: 2px solid #1C1C1C;
     padding-bottom: 10px;
     text-align: center;
 
 }
-.registerPage .register .signOrLogin .sign > a {
+.loginPage .login .loginOrSign .login1 > a {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 25px;
+    color: #000000;
+    opacity: 0.4;
+}
+.loginPage .login .loginOrSign .sign {
+    width: 155px;
+    border-bottom: 1px solid #E2E2E2;
+    padding-bottom: 10px;
+    text-align: center;
+
+}
+.loginPage .login .loginOrSign .sign > a {
     font-weight: 500;
     font-size: 18px;
     line-height: 25px;
     color: #000000;
 }
-.registerPage .register .form {
+.loginPage .login .form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+
 }
-.registerPage .register > form > div > input {
+.loginPage .login > form > div > input {
 
     width: 310px;
     height: 40px;
@@ -95,7 +90,7 @@ input {
     line-height: 17px;
     color: #8D8D8D;
 }
-.registerPage .register > form > button {
+.loginPage .login > form > button {
     width: 310px;
     height: 40px;
     background: #33BD4C;
@@ -104,4 +99,23 @@ input {
     line-height: 22px;
     text-align: center;
     color: #FFFFFF;
+
+}
+ .loginPage .login .form .auto {
+     display: flex;
+     align-items: center;
+     margin-top: 10px;
+     font-size: 12px;
+     line-height: 17px;
+     color: #000000;
+
+ }
+
+ .loginPage .login .form .auto > input {
+    width: 16px;
+    height: 16px;
+    background: #FFFFFF;
+    border: 1px solid #E2E2E2;
+    box-sizing: border-box;
+     margin-right: 5px;
 }

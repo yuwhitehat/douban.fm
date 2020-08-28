@@ -12,6 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Configuration
 @EnableSpringHttpSession
 public class SpringHttpSessionConfig {
+
+    /**
+     * 配置session
+     * @return
+     */
     @Bean
     public CookieSerializer cookieSerializer(){
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
