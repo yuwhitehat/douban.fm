@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>登录页</title>
@@ -16,10 +16,12 @@
         <form class="form" action="/authenticate"  method="post">
             <div>
                 <input type="text" class="name" name="name" placeholder="请输入用户名">
+                <p class="error">[[${message4}]]</p>
             </div>
 
             <div>
                 <input type="password" class="password" name="password" placeholder="请输入密码">
+                <p class="error">[[${message5}]]</p>
             </div>
 
 

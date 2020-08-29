@@ -24,6 +24,11 @@ input {
     margin: 0;
     padding: 0;
 }
+.error {
+    font-size: 12px;
+    line-height: 17px;
+    color: red;
+}
 .loginPage .go {
     position: absolute;
     top: 127px;
@@ -57,7 +62,7 @@ input {
     font-size: 18px;
     line-height: 25px;
     color: #000000;
-    opacity: 0.4;
+
 }
 .loginPage .login .loginOrSign .sign {
     width: 155px;
@@ -71,6 +76,7 @@ input {
     font-size: 18px;
     line-height: 25px;
     color: #000000;
+    opacity: 0.4;
 }
 .loginPage .login .form {
     display: flex;
@@ -103,7 +109,6 @@ input {
 }
  .loginPage .login .form .auto {
      display: flex;
-     align-items: center;
      margin-top: 10px;
      font-size: 12px;
      line-height: 17px;

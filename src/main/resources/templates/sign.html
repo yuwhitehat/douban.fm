@@ -19,6 +19,7 @@
             <div th:classappend="${#fields.hasErrors('name')} ? 'error' : ''">
                 <input type="text" class="name" name="name" placeholder="请输入用户名" th:filed="*{name}">
                 <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                <p class="error">[[${message1}]]</p>
             </div>
             <div>
                 <input type="text" class="mobile" name="mobile" placeholder="请输入号码">
@@ -29,8 +30,9 @@
             </div>
            <div>
                <input type="password" class="confirm" name="confirmPwd" placeholder="确认密码">
+               <p class="error">[[${message2}]]</p>
            </div>
-
+            <p class="error">[[${message3}]]</p>
             <button type="submit">注册豆瓣</button>
 
         </form>

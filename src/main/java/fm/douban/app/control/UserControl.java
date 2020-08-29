@@ -50,37 +50,40 @@ public class UserControl {
      * @return
      */
     @PostMapping(path = "/register")
-    @ResponseBody
-    public Map registerAction(@RequestParam(name = "name") String name, @RequestParam(name = "password")String password, @RequestParam(name = "mobile")String mobile,
-                              @RequestParam(name = "confirmPwd") String confirmPwd, HttpServletRequest request, HttpServletResponse response) {
-        Map returnMap = new HashMap();
+    //@ResponseBody
+    public String registerAction(Model model,@RequestParam(name = "name") String name, @RequestParam(name = "password")String password, @RequestParam(name = "mobile")String mobile,
+                              @RequestParam(name = "confirmPwd") String confirmPwd, HttpServletRequest request, HttpServletResponse response,
+                                 @Valid User user,BindingResult error) {
+        if (error.hasErrors()) {
+            return "sign";
+        }
+
         // 判断注册名是否已存在
         if (getUserByLoginName(name) != null) {
-            returnMap.put("result", false);
-            returnMap.put("message", "register name already exist");
-            return returnMap;
+
+            model.addAttribute("message1","register name already exist");
+            return "sign";
         }
 
         //记录用户信息
-        User user = new User();
+        //user = new User();
         user.setName(name);
         user.setMobile(mobile);
         if (password.equals(confirmPwd)) {
             user.setPassword(password);
         } else {
-            returnMap.put("result", false);
-            returnMap.put("message", "password confirmed is correct");
-            return returnMap;
+
+            model.addAttribute("message2","password confirmed is not correct");
+            return "sign";
         }
         User newUser = userService.add(user);
         if (newUser != null && StringUtils.hasText(newUser.getId())) {
-            returnMap.put("result",true);
-            returnMap.put("message","register successful");
+            return "redirect:/index";
         }else {
-            returnMap.put("result",false);
-            returnMap.put("message","register failed");
+            model.addAttribute("message3","register failed");
+            return "sign";
         }
-        return returnMap;
+
     }
 
     /**
@@ -103,17 +106,17 @@ public class UserControl {
      * @return
      */
     @PostMapping(path = "/authenticate")
-    @ResponseBody
-    public Map login(@RequestParam(name = "name") String name, @RequestParam(name = "password")String password,
+    //@ResponseBody
+    public String login(Model model,@RequestParam(name = "name") String name, @RequestParam(name = "password")String password,
                      HttpServletRequest request,HttpServletResponse response) {
-        Map returnData = new HashMap();
+
         User loginUser = getUserByLoginName(name);
 
-        //判断登录的用户是否存在
+        //如果查不到用户
         if (loginUser == null) {
-            returnData.put("result",false);
-            returnData.put("message","userName not correct");
-            return returnData;
+
+            model.addAttribute("message4","userName is not correct");
+            return "login";
         }
 
         if (loginUser.getPassword().equals(password)) {
@@ -122,19 +125,16 @@ public class UserControl {
             userLoginInfo.setUserName(name);
             HttpSession session = request.getSession();
             session.setAttribute("userLoginInfo", userLoginInfo);
-            returnData.put("result",true);
-            returnData.put("message","login successful");
+            return "redirect:/index";
         } else {
-            returnData.put("result",false);
-            returnData.put("message","login failed");
-
+            model.addAttribute("message5","password is not correct");
+            return "login";
         }
 
-        return returnData;
     }
 
     /**
-     * 查找已经登陆的用户
+     * 通过登录名查找用户，如果查找到返回第一个用户
      * @param loginName
      * @return
      */
