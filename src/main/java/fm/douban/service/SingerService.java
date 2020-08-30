@@ -19,6 +19,7 @@ public interface SingerService {
      */
     public Singer get(String singerId);
 
+
     /**
      * 查询全部歌手
      * @return

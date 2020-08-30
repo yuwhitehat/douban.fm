@@ -59,7 +59,9 @@ public class MainControl {
         model.addAttribute("singers",singers);
 
         //mhz
-        List<Subject> subjects = subjectService.getSubjects(SubjectUtil.TYPE_MHZ);
+        Subject s = new Subject();
+        s.setSubjectType(SubjectUtil.TYPE_MHZ);
+        List<Subject> subjects = subjectService.getSubjects(s);
         List<Subject> ages = new ArrayList<>();
         List<Subject> moods = new ArrayList<>();
         List<Subject> styles = new ArrayList<>();

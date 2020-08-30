@@ -1,0 +1,191 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
+h1,
+h2 {
+    margin: 0;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+/* 浏览器都有自己的默认样式，以上部分为清除浏览器默认样式 */
+
+.union{
+    position: absolute;
+    top: 79px;
+    right: 292px;
+}
+.union > a > img {
+    width: 14px;
+    height: 14px;
+}
+.collectionDetail {
+    width: 786px;
+    margin: 79px auto;
+    border: 1px solid #E4E4E4;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 66px 100px 0px;
+    position: relative;
+}
+.collectionDetail .head {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eaeaea;
+}
+.collectionDetail .head .top {
+    display: flex;
+}
+.collectionDetail .head .top .left {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin-right: 40px;
+}
+.collectionDetail .head .top .left > img {
+    width: 180px;
+    height: 180px;
+}
+.collectionDetail .head .top .left .play-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(122, 217, 64, 0.56);
+}
+.collectionDetail .head .top .left .play-icon span {
+    margin-left: 3px;
+    display: block;
+    width: 24px;
+    height: 18px;
+    background: url("/images/white-paly.png") no-repeat center;
+    background-size: contain;
+}
+.collectionDetail .head .top .right {
+    display: flex;
+    flex-direction: column;
+}
+.collectionDetail .head .top .right .title {
+    margin-bottom: 5px;
+    margin-top: -9px;
+    font-size: 30px;
+    line-height: 42px;
+    color: #000000;
+}
+.collectionDetail .head .top .right .sub-title {
+    text-align: left;
+    font-size: 12px;
+    line-height: 17px;
+    color: #adadad;
+}
+.collectionDetail .head .change-items {
+    display: flex;
+    margin-top: 30px;
+}
+.collectionDetail .head .change-items li {
+    font-size: 12px;
+    line-height: 17px;
+    color: rgba(0, 0, 0, 0.4);
+    margin-right: 30px;
+    cursor: pointer;
+}
+.collectionDetail .head .change-items li:last-child {
+    margin-right: 0px;
+}
+.collectionDetail .head .change-items li.selected {
+    color: black;
+
+}
+.collectionDetail .select-song {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.collectionDetail .select-song .song-list {
+    padding: 30px 0 92px;
+}
+.collectionDetail .select-song .song-list li {
+    height: 20px;
+    margin-bottom: 18px;
+    font-size: 12px;
+    line-height: 20px;
+    color: #000000;
+    display: flex;
+    align-items: center;
+}
+
+.collectionDetail .select-song .song-list li img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+.collectionDetail .share-icon {
+    position: absolute;
+    right: 78px;
+    top: 159px;
+    width: 20px;
+    height: 20px;
+    background: url("/images/share.png") no-repeat center;
+    background-size: contain;
+}
+.collectionDetail .otherSubjects-list {
+    display: none;
+}
+.collectionDetail .otherSubjects-list .otherSubjects {
+
+    padding: 30px 0 92px;
+}
+
+.collectionDetail .otherSubjects-list .otherSubjects > li {
+    height: 70px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+}
+.collectionDetail .otherSubjects-list .otherSubjects > li > img {
+    width: 70px;
+    height: 70px;
+    margin-right: 20px;
+}
+.collectionDetail .otherSubjects-list .otherSubjects > li > div {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    line-height: 17px;
+    color: #000000;
+
+}
+.collectionDetail .otherSubjects-list .otherSubjects > li > div > h2 {
+    font-size: 14px;
+    line-height: 20px;
+    color: #000000;
+    margin-bottom: 2px;
+}
+.collectionDetail .otherSubjects-list .otherSubjects > li > div .introduce1 {
+    opacity: 0.3;
+    display: block;
+    margin-bottom: 14px;
+}

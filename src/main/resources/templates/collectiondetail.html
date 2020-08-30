@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>歌单详情页</title>
+    <link rel="stylesheet" href="css/collectiondetail.css">
+</head>
+<body>
+<div th:fragment="collectionDetail">
+    <div class="union">
+        <a href="http://127.0.0.1:8080/collection"><img src="images/Union.png"></a>
+    </div>
+    <div class="collectionDetail">
+
+        <!-- 头部 -->
+        <div class="head">
+            <div class="top">
+                <div class="left">
+                    <img th:src="${subject.cover}">
+                    <div class="play-icon">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="right">
+                    <span class="title">[[${subject.name}]]</span>
+                    <span class="sub-title">[[${singer.name}]]创建50首歌曲 [[${subject.publishedDate}]]</span>
+                </div>
+            </div>
+            <ul class="change-items">
+                <li class="selected">歌曲列表</li>
+                <li class="other">[[${singer.name}]]的其它歌曲</li>
+            </ul>
+        </div>
+        <!-- 全部精选歌曲 -->
+        <div class="select-song" id="select-song">
+            <!-- 歌曲列表 -->
+            <ul class="song-list" id="song-list">
+                <li class="song-list-item" th:each="song,it: ${songs}">
+                    <img th:src="${subject.cover}" /><span>[[${it.count}]].[[${song.name}]]</span>
+                </li>
+
+            </ul>
+        </div>
+        <div class="otherSubjects-list">
+            <ul class="otherSubjects">
+                <li th:each="otherSubject:${otherSubjects}">
+                    <img th:src="${otherSubject.cover}"/>
+                    <div>
+                        <h2>[[${otherSubject.name}]]</h2>
+                        <span class="introduce1">30首歌 42收藏</span>
+                        <span class="introduce2">[[${otherSubject.publishedDate}]]更新</span>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+        <div class="share-icon"></div>
+    </div>
+
+</div>
+<script src="js/collectionDetail.js"></script>
+
+</body>
+</html>

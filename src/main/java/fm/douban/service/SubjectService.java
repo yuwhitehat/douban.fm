@@ -20,19 +20,28 @@ public interface SubjectService {
     public Subject get(String subjectId);
 
     /**
-     * 查询一组主题
+     * 通过一级查询一组主题
      * @param type
      * @return
      */
     public List<Subject> getSubjects(String type);
 
     /**
-     * 查询一组主题
+     * 通过一级和二级查询一组主题
      * @param type
      * @param subType
      * @return
      */
     public List<Subject> getSubjects(String type, String subType);
+
+    /**
+     * 查询一组主题
+     * @param subjectParam
+     * @return
+     */
+    public List<Subject> getSubjects(Subject subjectParam);
+
+
 
     /**
      * 删除一组主题

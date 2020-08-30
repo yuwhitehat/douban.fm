@@ -51,44 +51,62 @@ public class SubjectServiceImpl implements SubjectService {
         }
         return mongoTemplate.findById(subjectId, Subject.class);
     }
+
     /**
-     * 查询一组主题
+     * 通过一级查询一组主题
      * @param type
      * @return
      */
     @Override
     public List<Subject> getSubjects(String type) {
-        if (!StringUtils.hasText(type)) {
-            LOG.error("type is null");
-            return null;
-        }
-        Query query = new Query(Criteria.where("subjectType").is(type));
-
-        return mongoTemplate.find(query, Subject.class);
+        Subject subjectParam = new Subject();
+        subjectParam.setSubjectType(type);
+        return getSubjects(subjectParam);
     }
+
+
     /**
-     * 查询一组主题
+     * 通过一级和二级查询一组主题
      * @param type
      * @param subType
      * @return
      */
     @Override
     public List<Subject> getSubjects(String type, String subType) {
-        if (!StringUtils.hasText(type) || !StringUtils.hasText(subType)) {
-            LOG.error("type or subType is null");
+        Subject subjectParam = new Subject();
+        subjectParam.setSubjectType(type);
+        subjectParam.setSubjectSubType(subType);
+
+        return getSubjects(subjectParam);
+    }
+
+    @Override
+    public List<Subject> getSubjects(Subject subjectParam) {
+        if (subjectParam == null) {
+            LOG.error("input subjectParam is not correct.");
             return null;
         }
-
+        String type = subjectParam.getSubjectType();
+        String subType = subjectParam.getSubjectSubType();
         Criteria criteria = new Criteria();
         // 多个子条件
         List<Criteria> subCris = new ArrayList();
-        subCris.add(Criteria.where("subjectType").is(type));
-        subCris.add(Criteria.where("subjectSubType").is(subType));
+        if (StringUtils.hasText(type)) {
+            subCris.add(Criteria.where("subjectType").is(type));
+        }
+        if (StringUtils.hasText(subType)) {
+
+            subCris.add(Criteria.where("subjectSubType").is(subType));
+        }
+        if (StringUtils.hasText(subjectParam.getMaster())) {
+            subCris.add(Criteria.where("master").is(subjectParam.getMaster()));
+        }
         criteria.andOperator(subCris.toArray(new Criteria[]{}));
         Query query = new Query(criteria);
-
         return mongoTemplate.find(query, Subject.class);
+
     }
+
     /**
      * 删除一组主题
      * @param subjectId

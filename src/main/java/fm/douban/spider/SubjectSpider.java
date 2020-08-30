@@ -211,11 +211,26 @@ public class SubjectSpider {
             subject.setSubjectType(SubjectUtil.TYPE_COLLECTION);
             Map creator = (Map)subjectData.get("creator");
             subject.setMaster(creator.get("id").toString());
+            List simpleSongs = (List)subjectData.get("sample_songs");
+            List<String> songIds = new ArrayList<>();
+            for (int j = 0; j < simpleSongs.size(); j++) {
+                Map songData = (Map)simpleSongs.get(j);
+                Song song = new Song();
+                String id = songData.get("sid").toString();
+                song.setId(id);
+                songIds.add(id);
+                song.setName(songData.get("title").toString());
+                if (songService.get(song.getId()) == null) {
+                    songService.add(song);
+                }
+
+            }
+            subject.setSongIds(songIds);
             if (subjectService.get(subject.getId()) == null) {
 
                 subjectService.addSubject(subject);
             }
-
+            subjectService.modify(subject);
             Singer singer = new Singer();
             singer.setId(creator.get("id").toString());
             singer.setGmtCreated(LocalDateTime.now());

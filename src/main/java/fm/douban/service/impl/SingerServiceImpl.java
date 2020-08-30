@@ -51,6 +51,9 @@ public class SingerServiceImpl implements SingerService {
         }
         return mongoTemplate.findById(singerId, Singer.class);
     }
+
+
+
     /**
      * 查询全部歌手
      * @return

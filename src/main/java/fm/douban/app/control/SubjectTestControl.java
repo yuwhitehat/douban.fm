@@ -37,8 +37,8 @@ public class SubjectTestControl {
     @GetMapping(path = "/test/subject/getByType")
     public List<Subject> testGetByType(){
         Subject subject = new Subject();
-        subject.setSubjectType(SubjectUtil.TYPE_MHZ);
-        return subjectService.getSubjects(subject.getSubjectType());
+        subject.setSubjectType(SubjectUtil.TYPE_COLLECTION);
+        return subjectService.getSubjects(subject);
     }
     @GetMapping(path = "/test/subject/getBySubType")
     public List<Subject> testGetBySubType(){

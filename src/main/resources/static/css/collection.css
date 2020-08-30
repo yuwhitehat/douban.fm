@@ -1,0 +1,76 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+h1, h2 ,h3{
+    margin: 0;
+    padding: 0;
+}
+ul,li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+button {
+
+    border: 0;
+    background-color: transparent;
+    outline: none;
+}
+.collection {
+    padding: 60px 199px 0 199px;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 12px;
+    line-height: 17px;
+    color: #000000;
+
+}
+.collection > li {
+    margin-bottom: 40px;
+    margin-right: 76px;
+    width: 150px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #EAEAEA;
+    display: flex;
+    flex-direction: column;
+}
+.collection > li:nth-child(5n+5) {
+    margin-right: 0;
+}
+
+.collection > li .player > img {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+.collection > li .title {
+
+    margin-bottom: 5px;
+}
+.collection > li .title > a {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+}
+.collection > li .master {
+    opacity: 0.4;
+    margin-bottom: 10px;
+}
+.collection > li > ul {
+    height: 63px;
+    overflow: hidden;
+}
+.collection > li > ul > li.song1 {
+    opacity: 0.4;
+    margin-bottom: 4px;
+}
+.collection > li .collect > span {
+
+    opacity: 0.4;
+
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>歌单页</title>
+    <link rel="stylesheet" href="css/collection.css">
+</head>
+<body>
+<div th:fragment="collection">
+    <ul class="collection">
+        <li th:each="subject:${subjects}">
+            <div class="player">
+                <img th:src="${subject.cover}">
+            </div>
+            <h3 class="title"><a th:href="@{'/collectiondetail?subjectId='+${subject.id}}" >[[${subject.name}]]</a></h3>
+            <div class="master">[[${singer.name}]] <span> 创建</span></div>
+            <ul>
+                <li th:each="song:${songs}" class="song1">[[${song.name}]]</li>
+
+            </ul>
+            <div class="collect">
+                <span>曲目 3  收藏 0</span>
+            </div>
+        </li>
+
+    </ul>
+</div>
+
+
+</body>
+</html>
