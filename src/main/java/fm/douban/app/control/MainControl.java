@@ -1,22 +1,25 @@
 package fm.douban.app.control;
 
-import fm.douban.model.MhzViewModel;
-import fm.douban.model.Singer;
-import fm.douban.model.Song;
-import fm.douban.model.Subject;
+import fm.douban.model.*;
 import fm.douban.param.SongQueryParam;
+import fm.douban.service.FavoriteService;
 import fm.douban.service.SingerService;
 import fm.douban.service.SongService;
 import fm.douban.service.SubjectService;
+import fm.douban.util.FavoriteUtil;
 import fm.douban.util.SubjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.xpath.XPath;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +34,9 @@ public class MainControl {
     private SingerService singerService;
     @Autowired
     private SubjectService subjectService;
+
+    @Autowired
+    private FavoriteService favoriteService;
 
     /**
      * 首页
@@ -126,5 +132,65 @@ public class MainControl {
         Map<String, List<Song>> map = new HashMap<>();
         map.put("songs",songs);
         return map;
+    }
+
+    /**
+     * 我的页面
+     * @param model
+     * @param request
+     * @param response
+     * @return
+     */
+    @GetMapping(path = "/my")
+    public String myPage(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        Favorite favorite = new Favorite();
+        favorite.setType(FavoriteUtil.TYPE_RED_HEART);
+        List<Favorite> favorites = favoriteService.list(favorite);
+        model.addAttribute("favorites",favorites);
+
+        favorite.setItemType(FavoriteUtil.ITEM_TYPE_SONG);
+        List<Favorite> favorites1 = favoriteService.list(favorite);
+        List<Song> songs = new ArrayList<>();
+        for (Favorite favorite1 : favorites1) {
+            songs.add(songService.get(favorite1.getItemId()));
+        }
+        model.addAttribute("songs", songs);
+        return "my";
+    }
+
+    /**
+     * 喜欢或者不喜欢操作，对前端比较简单，不必判断状态
+     * 已经喜欢，则删除，表示执行不喜欢操作
+     * 还没有喜欢记录，则新增，表示执行喜欢操作
+     * @param itemType
+     * @param itemId
+     * @param request
+     * @param response
+     * @return
+     */
+    @GetMapping(path = "/fav")
+    @ResponseBody
+    public Map doFav(@RequestParam(name = "itemType") String itemType,@RequestParam(name = "itemId") String itemId ,
+                     HttpServletRequest request, HttpServletResponse response) {
+
+        Map returnData = new HashMap();
+        Favorite favorite = new Favorite();
+
+        favorite.setItemType(itemType);
+        favorite.setItemId(itemId);
+
+        List<Favorite> favorites = favoriteService.list(favorite);
+        Favorite newFav = null;
+        for (Favorite f : favorites) {
+            if (f != null) {
+                favoriteService.delete(f);
+            }
+            newFav = favoriteService.add(f);
+        }
+        if (newFav != null && StringUtils.hasText(newFav.getId())) {
+            returnData.put("message", "successful");
+        }
+        return returnData;
     }
 }

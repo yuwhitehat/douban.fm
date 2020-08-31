@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的页面</title>
+    <link rel="stylesheet" href="css/my.css">
+</head>
+<body>
+<div th:fragment="my" class="my">
+
+    <div class="my_hearts">我的红心</div>
+    <section class="heart_songs">
+        <div class="title">
+            <div class="bg"></div>
+            <div>2首红心歌曲</div>
+        </div>
+        <ul>
+           <li th:each="song,it : ${songs}">
+               <span>[[${it.count}]]</span>
+               <img th:src="${song.cover}"/>
+               <div class="song_name">
+                   <h2>[[${song.name}]]</h2>
+                   <span>[[${song.name}]]·2020</span>
+               </div>
+
+           </li>
+        </ul>
+
+    </section>
+
+</div>
+
+</body>
+</html>

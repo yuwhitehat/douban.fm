@@ -1,0 +1,94 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+h1, h2 {
+    margin: 0;
+    padding: 0;
+}
+ul,li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+button {
+
+    border: 0;
+    background-color: transparent;
+    outline: none;
+}
+
+.my {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    line-height: 17px;
+
+}
+.my .my_hearts {
+    color: #2F9842;
+}
+.my .heart_songs {
+    margin-top: 49px;
+}
+
+.my .heart_songs .title {
+    padding: 0 370px 25px;
+    border-bottom: 1px solid #EAEAEA;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+.my .heart_songs .title .bg {
+    width: 42px;
+    height: 42px;
+    background-color: #FF2C56;
+    border-radius: 50%;
+    color: #9C9C9C;
+    margin-right: 20px;
+    position: relative;
+}
+.my .heart_songs .title .bg::before {
+    content: '';
+    position: absolute;
+    top: 9px;
+    left: 13px;
+    width: 24px;
+    height: 16px;
+    background: url("images/white-paly.png") no-repeat center;
+    background-size: contain;
+
+}
+.my .heart_songs > ul {
+    padding: 25px 0 0 342px;
+
+}
+
+.my .heart_songs > ul > li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #666666
+}
+
+.my .heart_songs > ul > li > img {
+    width: 40px;
+    height: 40px;
+    margin: 0 10px 0 20px;
+}
+.my .heart_songs > ul > li .song_name {
+    display: flex;
+
+}
+.my .heart_songs > ul > li .song_name > h2 {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #212121;
+    margin-bottom: 5px;
+}
