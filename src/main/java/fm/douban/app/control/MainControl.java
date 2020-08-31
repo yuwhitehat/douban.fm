@@ -193,4 +193,8 @@ public class MainControl {
         }
         return returnData;
     }
+    @GetMapping(path = "/share")
+    public String share(Model model){
+        return "share";
+    }
 }

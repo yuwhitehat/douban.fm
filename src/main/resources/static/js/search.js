@@ -6,7 +6,7 @@ content.addEventListener('input',function () {
             return response.json();
         })
         .then(function(myJson) {
-            console.log(myJson.songs);
+            //console.log(myJson.songs);
             create(myJson.songs);
         });
 });

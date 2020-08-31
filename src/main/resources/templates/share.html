@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>分享</title>
+    <link rel="stylesheet" href="css/share.css">
+</head>
+<body>
+<div th:fragment="share" class="share">
+    <div id="qrcode"></div>
+    <span>扫描分享到微信</span>
+    <ul>
+        <li>
+            <a href=""><img src="images/dou.png" ></a>
+        </li>
+        <li>
+            <a href=""><img src="images/weibo.png" ></a>
+        </li>
+        <li>
+            <a href=""><img src="images/qq.png" ></a>
+        </li>
+        <li>
+            <a href=""><img src="images/link.png" ></a>
+        </li>
+    </ul>
+
+</div>
+
+<script src="/js/qrcode-min.js"></script>
+<script src="js/qrcode.js"></script>
+</body>
+</html>
