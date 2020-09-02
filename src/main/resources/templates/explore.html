@@ -29,7 +29,7 @@
             <span></span>
         </div>
         <ul class="artists">
-            <li th:each="artist:${artistDatas}">
+            <li class="item" th:each="artist:${artistDatas}">
                 <img th:src="${artist.cover}"/>
                 <div class="name"><a th:href="@{'http://127.0.0.1:8080/artist?subjectId='+${artist.id}}" >[[${artist.name}]]</a></div>
                 <div class="description">[[${artist.description}]]</div>
@@ -52,7 +52,7 @@
             </li>
         </ul>
     </section>
-
+    <script src="/js/explore.js"></script>
 </div>
 </div>
 </html>

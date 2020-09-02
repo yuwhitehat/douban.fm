@@ -4,6 +4,8 @@ import fm.douban.model.User;
 import fm.douban.model.UserLoginInfo;
 import fm.douban.param.UserQueryParam;
 import fm.douban.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,8 +28,15 @@ import java.util.Map;
 @Controller
 public class UserControl {
 
-    @Autowired
+    private static final Logger LOG = LoggerFactory.getLogger(UserControl.class);
+     @Autowired
     private UserService userService;
+
+    @PostConstruct
+    public void init() {
+        LOG.info("UserControl 启动啦");
+        LOG.info("userService 注入啦");
+    }
 
     /**
      * 注册页

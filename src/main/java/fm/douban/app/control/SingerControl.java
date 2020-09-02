@@ -33,13 +33,16 @@ public class SingerControl {
     public List<Singer> randomSingers(){
 
         List<Singer> singers = singerService.getAll();
-        List<Singer> singers1 = new ArrayList<>();
+        List<Singer> randomSingers = new ArrayList<>();
         Random r = new Random();
-        for (int i = 0; i < 10; i++) {
-            int num = r.nextInt(singers.size());
-            singers1.add(singers.get(num));
+        if (singers.size() > 0) {
+            for (int i = 0; i < 10; i++) {
+                int num = r.nextInt(singers.size());
+                randomSingers.add(singers.get(num));
+            }
         }
-        return singers1;
+
+        return randomSingers;
     }
 
 }

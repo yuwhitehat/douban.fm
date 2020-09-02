@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -31,6 +32,12 @@ public class FavoriteServiceImpl implements FavoriteService {
         if (fav == null) {
             LOG.error("fav data is null");
             return null;
+        }
+        if (fav.getGmtCreated() == null) {
+            fav.setGmtCreated(LocalDateTime.now());
+        }
+        if (fav.getGmtModified() == null) {
+            fav.setGmtModified(LocalDateTime.now());
         }
         return mongoTemplate.insert(fav);
 
@@ -55,6 +62,9 @@ public class FavoriteServiceImpl implements FavoriteService {
         if (StringUtils.hasText(favParam.getType())) {
             subCris.add(Criteria.where("type").is(favParam.getType()));
         }
+        if (StringUtils.hasText(favParam.getUserId())) {
+            subCris.add(Criteria.where("userId").is(favParam.getUserId()));
+        }
 
         if (StringUtils.hasText(favParam.getItemType())){
             subCris.add(Criteria.where("itemType").is(favParam.getItemType()));
@@ -62,7 +72,10 @@ public class FavoriteServiceImpl implements FavoriteService {
         if (StringUtils.hasText(favParam.getItemId())){
             subCris.add(Criteria.where("itemId").is(favParam.getItemId()));
         }
-        criteria.andOperator(subCris.toArray(new Criteria[]{}));
+        if (!subCris.isEmpty()) {
+            criteria.andOperator(subCris.toArray(new Criteria[]{}));
+        }
+
         Query query = new Query(criteria);
 
         return mongoTemplate.find(query, Favorite.class);
