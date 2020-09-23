@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class SingerSongSpider {
@@ -32,13 +33,17 @@ public class SingerSongSpider {
 
     @Autowired
     private SongService songService;
-    //@PostConstruct
+    @PostConstruct
     public void init(){
-        doExecute();
+        CompletableFuture.supplyAsync(() -> doExecute())
+                .thenAccept(result -> LOG.info("spider end ..."));
+
     }
     //开始执行爬取任务
-    public void doExecute(){
+    public boolean doExecute(){
+
         getSongDataBySingers();
+        return true;
     }
 
     /**
@@ -46,8 +51,7 @@ public class SingerSongSpider {
      */
     private void getSongDataBySingers(){
         List<Singer> singers = singerService.getAll();
-
-        for (Singer singer : singers) {
+        singers.forEach(singer -> {
             HttpUtil httpUtil = new HttpUtil();
             String url = "https://fm.douban.com/j/v2/artist/" + singer.getId() + "/";
             String content = httpUtil.getContent(url, new HashMap<>());
@@ -56,8 +60,7 @@ public class SingerSongSpider {
 
             getSongList(returnData);
             getSimilarSingers(singer, returnData);
-
-        }
+        });
     }
 
 
@@ -69,10 +72,9 @@ public class SingerSongSpider {
     private void getSimilarSingers(Singer singer, Map returnData) {
 
         Map relatedChannel = (Map)returnData.get("related_channel");
-        List similarSingers = (List)relatedChannel.get("similar_artists");
+        List<Map> similarSingers = (List<Map>)relatedChannel.get("similar_artists");
         List<String> similarSingerIds = new ArrayList<>();
-        for (int i = 0; i < similarSingers.size(); i++) {
-            Map similarSingersData = (Map)similarSingers.get(i);
+        similarSingers.forEach(similarSingersData -> {
             Singer singer2 = new Singer();
             String id = similarSingersData.get("id").toString();
             singer2.setId(id);
@@ -82,7 +84,8 @@ public class SingerSongSpider {
                 singerService.addSinger(singer);
             }
             similarSingerIds.add(id);
-        }
+        });
+
         singer.setSimilarSingerIds(similarSingerIds);
 
         singerService.modify(singer);
@@ -95,9 +98,8 @@ public class SingerSongSpider {
     private void getSongList(Map returnData) {
 
         Map songList = (Map)returnData.get("songlist");
-        List songs = (List)songList.get("songs");
-        for (int i = 0; i < songs.size(); i++) {
-            Map songData = (Map)songs.get(i);
+        List<Map> songs = (List<Map>)songList.get("songs");
+        songs.forEach(songData -> {
             Song song  = new Song();
             song.setId(songData.get("sid").toString());
             song.setName(songData.get("title").toString());
@@ -116,6 +118,7 @@ public class SingerSongSpider {
                 songService.add(song);
             }
             songService.modify(song);
-        }
+        });
+
     }
 }

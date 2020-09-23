@@ -21,12 +21,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class SubjectSpider {
 
     private static final String MHZ_URL = "https://fm.douban.com/j/v2/";
+    private static final String MHZ_REFERER = "https://douban.fm/";
+    private static final String HOST = "douban.fm";
     private static final Logger LOG = LoggerFactory.getLogger(SubjectSpider.class);
+
+    @Autowired
+    private HttpUtil httpUtil;
+
     @Autowired
     private SubjectService subjectService;
 
@@ -37,12 +44,14 @@ public class SubjectSpider {
     private SongService songService;
 
     //系统启动时自动执行爬取任务
-    //@PostConstruct
+    @PostConstruct
     public void init(){
-        doExecute();
+        CompletableFuture.supplyAsync(() -> doExecute()).thenAccept(result -> {
+            LOG.error("spider end ...");
+        });
     }
     //开始执行爬取任务
-    public void doExecute(){
+    public boolean doExecute(){
         Map channels = getSubjectData();
         getArtistData(channels);
         getMHZData(channels, "scenario");
@@ -50,6 +59,7 @@ public class SubjectSpider {
         getMHZData(channels, "genre");
         getMHZData(channels, "artist");
         getCollectionsData();
+        return true;
     }
 
     /**
@@ -57,9 +67,10 @@ public class SubjectSpider {
      * @return
      */
     private Map getSubjectData(){
-        HttpUtil httpUtil = new HttpUtil();
+
+        Map<String, String> headerData = httpUtil.buildHeaderData(MHZ_REFERER, HOST);
         String url = MHZ_URL + "rec_channels?specific=all";
-        String content = httpUtil.getContent(url, new HashMap<>());
+        String content = httpUtil.getContent(url,headerData);
         //LOG.info("爬取成功");
         //反序列化
         Map returnData = JSON.parseObject(content, Map.class);
@@ -70,9 +81,8 @@ public class SubjectSpider {
     }
     private void getArtistData(Map channels){
 
-        List artist = (List)channels.get("artist");
-        for (int i = 0; i < artist.size(); i++) {
-            Map artistData = (Map)artist.get(i);
+        List<Map> artist = (List<Map>)channels.get("artist");
+        artist.forEach(artistData -> {
             Singer singer = new Singer();
             singer.setId(artistData.get("artist_id").toString());
             singer.setGmtCreated(LocalDateTime.now());
@@ -91,15 +101,13 @@ public class SubjectSpider {
 
                 singerService.addSinger(singer);
             }
-
-        }
+        });
 
     }
     private void getMHZData(Map channels, String type){
 
-        List subjects = (List)channels.get(type);
-        for (int i = 0; i < subjects.size(); i++) {
-            Map subjectData = (Map)subjects.get(i);
+        List<Map> subjects = (List<Map>)channels.get(type);
+        subjects.forEach(subjectData -> {
             Subject subject = new Subject();
             subject.setId(subjectData.get("id").toString());
             subject.setGmtCreated(LocalDateTime.now());
@@ -126,8 +134,7 @@ public class SubjectSpider {
             }
 
             getSubjectSongData(subject.getId());
-
-        }
+        });
 
     }
 
@@ -137,20 +144,15 @@ public class SubjectSpider {
      */
     private void getSubjectSongData(String subjectId) {
 
-        HttpUtil httpUtil = new HttpUtil();
         String url = MHZ_URL + "playlist?channel=" + subjectId + "&kbps=128&client=s%3Amainsite%7Cy%3A3.0&app_name=radio_website&version=100&type=n";
         String content = httpUtil.getContent(url, new HashMap<>());
         //LOG.info(content);
         Map returnData = JSON.parseObject(content,Map.class);
-        List songDatas = (List)returnData.get("song");
+        List<Map> songDatas = (List<Map>)returnData.get("song");
 
         Subject subject = subjectService.get(subjectId);
         List<String> songIds = new ArrayList<>();
-
-        for (int i = 0; i < songDatas.size(); i++) {
-
-            Map songData = (Map)songDatas.get(i);
-
+        songDatas.forEach(songData -> {
             Song song = new Song();
             song.setId(songData.get("sid").toString());
             song.setGmtCreated(LocalDateTime.now());
@@ -159,10 +161,9 @@ public class SubjectSpider {
             song.setCover(songData.get("picture").toString());
             song.setUrl(songData.get("url").toString());
 
-            List singersData = (List)songData.get("singers");
+            List<Map> singersData = (List<Map>)songData.get("singers");
             List<String> singerIds =  new ArrayList<>();
-            for (int j = 0; j < singersData.size(); j++) {
-                Map singerData = (Map)singersData.get(i);
+            singersData.forEach(singerData -> {
                 Singer singer = new Singer();
                 singer.setId(singerData.get("id").toString());
                 singer.setGmtCreated(LocalDateTime.now());
@@ -174,16 +175,15 @@ public class SubjectSpider {
                 }
 
                 singerIds.add(singerData.get("id").toString());
-            }
+            });
             song.setSingerIds(singerIds);
             if (songService.get(song.getId()) == null) {
                 songService.add(song);
             }
             songIds.add(songData.get("sid").toString());
-        }
+        });
         subject.setSongIds(songIds);
         subjectService.modify(subject);
-
     }
 
     /**
@@ -191,14 +191,12 @@ public class SubjectSpider {
      */
     private void getCollectionsData(){
 
-        HttpUtil httpUtil = new HttpUtil();
         String url = "https://douban.fm/j/v2/songlist/explore?type=hot&genre=0&limit=20&sample_cnt=5";
 
         String content = httpUtil.getContent(url, new HashMap<>());
 
         List<Map> returnData = JSON.parseObject(content,List.class);
-        for (int i = 0; i < returnData.size(); i++) {
-            Map subjectData = (Map) returnData.get(i);
+        returnData.forEach(subjectData ->{
             Subject subject = new Subject();
             subject.setId(subjectData.get("id").toString());
             subject.setName(subjectData.get("title").toString());
@@ -211,10 +209,9 @@ public class SubjectSpider {
             subject.setSubjectType(SubjectUtil.TYPE_COLLECTION);
             Map creator = (Map)subjectData.get("creator");
             subject.setMaster(creator.get("id").toString());
-            List simpleSongs = (List)subjectData.get("sample_songs");
+            List<Map> simpleSongs = (List<Map>)subjectData.get("sample_songs");
             List<String> songIds = new ArrayList<>();
-            for (int j = 0; j < simpleSongs.size(); j++) {
-                Map songData = (Map)simpleSongs.get(j);
+            simpleSongs.forEach(songData -> {
                 Song song = new Song();
                 String id = songData.get("sid").toString();
                 song.setId(id);
@@ -223,8 +220,7 @@ public class SubjectSpider {
                 if (songService.get(song.getId()) == null) {
                     songService.add(song);
                 }
-
-            }
+            });
             subject.setSongIds(songIds);
             if (subjectService.get(subject.getId()) == null) {
 
@@ -242,7 +238,7 @@ public class SubjectSpider {
                 singerService.addSinger(singer);
 
             }
-        }
+        });
 
     }
 
